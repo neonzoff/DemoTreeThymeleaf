@@ -1,4 +1,4 @@
-package com.neonzoff.DemoTreeThymeleaf;
+package com.neonzoff.demotreethymeleaf;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

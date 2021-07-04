@@ -1,10 +1,10 @@
-package com.neonzoff.DemoTreeThymeleaf.controller;
+package com.neonzoff.demotreethymeleaf.controller;
 
-import com.neonzoff.DemoTreeThymeleaf.model.Node;
+import com.neonzoff.demotreethymeleaf.model.Node;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,28 +16,29 @@ import java.util.List;
 public class NodesController {
 
     //change path here
-    private final String PATH = "C:\\Program Files\\Java";
+    @Value("C:\\Program Files\\Java")
+    private String PATH;
 
     private List<Node> nodes;
 
 
     @GetMapping
-    public List<Node> nodes() throws IOException {
+    public List<Node> nodes() {
         return getSampleNodeList();
     }
 
 
-    private List<Node> getSampleNodeList() throws IOException {
+    private List<Node> getSampleNodeList() {
         nodes = new ArrayList<>();
 
         File file = new File(PATH);
         nodes.add(new Node(PATH, "0", file.getName(), "Каталог", ""));
-        getDirectory(file);
+        fillNodes(file);
 
         return nodes;
     }
 
-    private void getDirectory(File file) {
+    private void fillNodes(File file) {
         File[] files = file.listFiles();
         for (File tempFile : files) {
             if (tempFile.isFile()) {
@@ -48,7 +49,7 @@ public class NodesController {
 //                System.out.println("[Каталог] " + tempFile.getPath());
                 nodes.add(new Node(tempFile.getPath(), tempFile.getParentFile().getPath(), tempFile.getName(), "Каталог", ""));
 //                System.out.print("Директория: Путь=" + tempFile.getPath() + " Путь_родителя=" + tempFile.getParentFile().getPath() + " имя_директории=" + tempFile.getName() + "\n");
-                getDirectory(tempFile);
+                fillNodes(tempFile);
             }
         }
 
